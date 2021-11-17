@@ -5,7 +5,9 @@ namespace Chat\Scenario;
 use \Chat\Http\Request;
 use \Chat\Http\Params;
 use \Chat\Inject;
+use \Chat\Injector;
 use \Chat\Scenario;
+use \Chat\Model;
 
 /**
  * Implements scenarios of authentication page for unauthorized visitors.
@@ -25,15 +27,24 @@ class Auth implements Scenario
     public function run(Request $req): array
     {
         $visibleForm = true;
+        $title = 'Auth page';
 
         $post = $req->POST->getAll();
         if($post != [] && is_array($post)) {
             $visibleForm = false;
-            print_r($post);
-            echo 'Проверить базу и зарегать пользователя';
+
+            $login = $req->POST->String('login');
+            $pass = $req->POST->passwordHash('pass');
+
+            $modelAuth = new Model\Auth();
+            $title = $modelAuth->checkUserInBD($login);
+            if($title == 'Логин занят') {
+                $visibleForm = true;
+            }
+
         }
         return ['toRender' => [
-            'title' => 'Auth page',
+            'title' => $title,
             'form' => $visibleForm,
         ]];
     }

@@ -61,6 +61,18 @@ class Params
     }
 
     /**
+     * Returns String cache password.
+     *
+     * @param string|int $key  Name of parameter.
+     *
+     * @return string   cache password.
+     */
+    public function passwordHash($key): string
+    {
+        return password_hash($this->params[$key], PASSWORD_BCRYPT);
+    }
+
+    /**
      * Returns integer representation of required parameter.
      *
      * @param string|int $key  Name of parameter.

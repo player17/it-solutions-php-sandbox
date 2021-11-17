@@ -78,7 +78,7 @@ class Request
     {
         $baseRequestUri = $_SERVER['REQUEST_URI'];
         //-->> Get Request uri
-        if($_SESSION['AUTH'] !== TRUE) {
+        if($_SESSION['AUTH'] !== TRUE && $baseRequestUri == '/') {
             $baseRequestUri = 'Auth';
         }
         return $this->parse(
