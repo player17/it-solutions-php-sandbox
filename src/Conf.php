@@ -23,10 +23,10 @@ class Conf
      * @var array
      */
     public static $MySQL = [
-        'name' => '',
-        'host' => '',
-        'user' => '',
-        'pass' => '',
+        'name' => 'chat',
+        'host' => 'mysql',
+        'user' => 'root',
+        'pass' => 'qwerty',
     ];
 
     /**

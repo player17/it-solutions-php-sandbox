@@ -46,7 +46,7 @@ docker.up: docker.down
 #	make deps [dev=(yes|no)]
 
 deps: | deps.composer
-ifeq ($(wildcard $(PWD)/public/version),)
+ifeq ($(wildcard %CD%/public/version),)
 	printf "$(VERSION)" > public/version
 endif
 ifeq ($(wildcard my.env),)
@@ -69,7 +69,7 @@ composer-cmd = $(if $(call eq,$(cmd),),install,$(cmd))
 
 deps.composer:
 ifneq ($(dockerized),no)
-	docker run --rm --network=host -v "$(PWD)":/app -w /app \
+	docker run --rm --network=host -v "%CD%":/app -w /app \
 	           -e CI_SERVER='$(CI_SERVER)' \
 		composer:$(COMPOSER_VER) \
 			make deps.composer cmd='$(composer-cmd)' dev='$(dev)' dockerized=no
@@ -107,7 +107,7 @@ test-php-cov = $(if $(call eq,$(cov),),1,$(cov))
 
 test.php:
 ifneq ($(dockerized),no)
-	docker run --rm -v "$(PWD)":/app -w /app --entrypoint='' \
+	docker run --rm -v "%CD%":/app -w /app --entrypoint='' \
 		kahlan/kahlan:$(KAHLAN_VER) \
 			make test.php cov=$(test-php-cov) dockerized=no
 else
@@ -137,7 +137,7 @@ docs: docs.php
 
 docs.php:
 ifneq ($(dockerized),no)
-	docker run --rm -v "$(PWD)":/app -w /app --entrypoint='' \
+	docker run --rm -v "%CD%":/app -w /app --entrypoint='' \
 		phpdoc/phpdoc:$(PHPDOC_VER) \
 			make docs.php dockerized=no
 else
@@ -165,7 +165,7 @@ build.docker:
 		$(if $(call eq,$(no-cache),yes),--no-cache,) \
 		$(if $(call eq,$(target),),,--target=$(target)) \
 		--build-arg VERSION=$(VERSION) \
-		-t $IMAGE_NAME:dev \
+		-t $(IMAGE_NAME):dev \
 		. /
 
 
