@@ -76,8 +76,13 @@ class Request
      */
     public function parseSuperGlobal(): self
     {
+        $baseRequestUri = $_SERVER['REQUEST_URI'];
+        //-->> Get Request uri
+        if($_SESSION['AUTH'] !== TRUE) {
+            $baseRequestUri = 'Auth';
+        }
         return $this->parse(
-            $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'], $_GET, $_POST,
+            $_SERVER['HTTP_HOST'], $baseRequestUri, $_GET, $_POST,
         );
     }
 

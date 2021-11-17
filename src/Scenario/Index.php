@@ -24,17 +24,8 @@ class Index implements Scenario
      */
     public function run(Request $req): array
     {
-        $request = $_SERVER['QUERY_STRING'];
-
-
-        if($_SESSION['AUTH'] !== TRUE) {
-            return ['toRender' => [
-                'data' => 'Form Auth',
-            ]];
-        } else {
-            return ['toRender' => [
-                'data' => 'Hello Chat !!!',
-            ]];
-        }
+        return ['toRender' => [
+            'data' => 'Hello Chat !!!',
+        ]];
     }
 }
