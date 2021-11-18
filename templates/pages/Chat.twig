@@ -1,5 +1,21 @@
 {% extends 'layout/default.twig' %}
 
 {% block content %}
-  Чат
+  <h3>{{ title }}</h3>
+  {% if formSendMsg == TRUE %}
+    <form action="Chat" method="post">
+      <div>
+        <textarea name="textMsg"
+          rows="5" cols="30" placeholder="Введите сообщение ..."></textarea>
+      </div>
+      <input type="hidden" name="typeForm" value="msg">
+      <input type="hidden" name="to" value="{{ to }}">
+      <input type="hidden" name="from" value="{{ from }}">
+      <input type="hidden" name="loginUser" value="{{ loginUser }}">
+      <button type="submit">Отправить</button>
+    </form>
+  {% endif %}
+  {% if buttonBack == TRUE %}
+    <a href="/">Вернуться назад</a>
+  {% endif %}
 {% endblock %}

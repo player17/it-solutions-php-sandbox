@@ -56,12 +56,8 @@ class Application
 
 
                 try {
-                    return new \PDO('mysql:host='.Conf::$MySQL['host'].';dbname='.Conf::$MySQL['name'], Conf::$MySQL['user'], Conf::$MySQL['pass']);
-                    /*
-                    foreach($dbh->query('SELECT * from example') as $row) {
-                        print_r($row);
-                    }
-                    */
+                    return new \PDO('mysql:host='.Conf::$MySQL['host'].';dbname='.Conf::$MySQL['name'].';charset=UTF8', Conf::$MySQL['user'], Conf::$MySQL['pass']);
+
                 } catch (PDOException $e) {
                     print "Error!: " . $e->getMessage() . "<br/>";
                     die();

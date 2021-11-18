@@ -25,7 +25,7 @@ class Index implements Scenario
     public function run(Request $req): array
     {
         return ['toRender' => [
-            'title' => $_COOKIE['login'],
+            'title' => 'Здравствуйте, ' . $_COOKIE['login'],
         ]];
     }
 }

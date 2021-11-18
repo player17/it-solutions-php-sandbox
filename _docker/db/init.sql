@@ -31,3 +31,19 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `chats`.
+--
+
+CREATE TABLE IF NOT EXISTS `chats` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `to` int(11) unsigned NOT NULL,
+   `from` int(11) unsigned NOT NULL,
+   `comment` text NOT NULL,
+   `date` DATE,
+   PRIMARY KEY (`id`),
+   INDEX chats(`to`,`from`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
