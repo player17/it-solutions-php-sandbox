@@ -24,14 +24,14 @@ class Auth extends Model
      * Check user for existence in table users.
      *
      * @param string $login  Login user.
-     * @param string $pass  Login user.
+     * @param string $pass  Password user.
      *
      * @return boolean|int Result user verification.
      */
     public function checkUserInBD($login, $pass) {
-        //-->> Сделать через трайд
+        // TODO Rafikov Сделать через трайд
         $dbh = $this->db;
-        $sql = 'SELECT * FROM `users` WHERE `login` = :login';
+        $sql = 'SELECT `id` FROM `users` WHERE `login` = :login';
 
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':login', $login);
@@ -58,6 +58,33 @@ class Auth extends Model
 
             return $idUser;
         }
+    }
+
+    /**
+     * Check password user in datebase.
+     *
+     * @param string $login  Login user.
+     * @param string $pass  password user.
+     *
+     * @return boolean|int Result check password.
+     */
+    public function checkPassUser($login, $pass) {
+
+        $dbh = $this->db;
+        $sql = 'SELECT `id`,`pass` FROM `users` WHERE `login` = :login';
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':login', $login);
+        $stmt->execute();
+
+        $passHash = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if(password_verify($pass, $passHash['pass'])) {
+            return $passHash['id'];
+        } else {
+            return FALSE;
+        }
+
     }
 
 }

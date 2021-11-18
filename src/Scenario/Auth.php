@@ -16,6 +16,13 @@ class Auth implements Scenario
 {
     use Inject\HtmlRenderer;
 
+    public $authModel = null;
+
+    public function __construct()
+    {
+        $this->authModel = new Model\Auth();
+    }
+
 
     /**
      * Runs scenario of index page.
@@ -40,9 +47,11 @@ class Auth implements Scenario
                 $login = $req->POST->String('login');
                 $pass = $req->POST->passwordHash('pass');
 
-                $modelAuth = new Model\Auth();
+                $modelAuth = $this->authModel;
                 if($idUser = $modelAuth->checkUserInBD($login, $pass)) {
                     $title = 'Здравствуй, ' . $login;
+
+                    // TODO Rafikov создать класс по работе с куками
                     setcookie("AUTH", 'TRUE', time()+3600);
                     setcookie("idUser", $idUser, time()+3600);
                     setcookie("login", $login, time()+3600);
@@ -52,7 +61,23 @@ class Auth implements Scenario
                     $visibleForm = true;
                 }
             } else if($req->POST->String('typeForm') =='enter') {
+                // TODO Rafikov проверка пользователя в базе и хеш пароля
+                $login = $req->POST->String('login');
+                $pass = $req->POST->String('pass');
 
+                $modelAuth = $this->authModel;
+                if($idUser = $modelAuth->checkPassUser($login, $pass)) {
+                    $visibleForm = false;
+                    $enterForm = false;
+                    $title = 'Здравствуй, ' . $login;
+
+                    setcookie("AUTH", 'TRUE', time()+3600);
+                    setcookie("idUser", $idUser, time()+3600);
+                    setcookie("login", $login, time()+3600);
+                    $searchLogin = true;
+                } else {
+                    $title = 'Неверный логин или пароль';
+                }
             }
 
 
