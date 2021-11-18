@@ -76,9 +76,9 @@ class Request
      */
     public function parseSuperGlobal(): self
     {
+        // TODO Rafikov Move it to another place
         $baseRequestUri = $_SERVER['REQUEST_URI'];
-        //-->> Get Request uri
-        if($_SESSION['AUTH'] !== TRUE && $baseRequestUri == '/') {
+        if($_COOKIE['AUTH'] !== 'TRUE' && $baseRequestUri == '/') {
             $baseRequestUri = 'Auth';
         }
         return $this->parse(

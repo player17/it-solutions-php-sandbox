@@ -27,25 +27,41 @@ class Auth implements Scenario
     public function run(Request $req): array
     {
         $visibleForm = true;
+        $searchLogin = false;
+        $enterForm = true;
         $title = 'Auth page';
 
         $post = $req->POST->getAll();
         if($post != [] && is_array($post)) {
-            $visibleForm = false;
 
-            $login = $req->POST->String('login');
-            $pass = $req->POST->passwordHash('pass');
+            if($req->POST->String('typeForm') =='auth') {
+                $visibleForm = false;
 
-            $modelAuth = new Model\Auth();
-            $title = $modelAuth->checkUserInBD($login);
-            if($title == 'Логин занят') {
-                $visibleForm = true;
+                $login = $req->POST->String('login');
+                $pass = $req->POST->passwordHash('pass');
+
+                $modelAuth = new Model\Auth();
+                if($idUser = $modelAuth->checkUserInBD($login, $pass)) {
+                    $title = 'Здравствуй, ' . $login;
+                    setcookie("AUTH", 'TRUE', time()+3600);
+                    setcookie("idUser", $idUser, time()+3600);
+                    setcookie("login", $login, time()+3600);
+                    $searchLogin = true;
+                } else {
+                    $title = 'Есть такой пользователь';
+                    $visibleForm = true;
+                }
+            } else if($req->POST->String('typeForm') =='enter') {
+
             }
+
 
         }
         return ['toRender' => [
             'title' => $title,
             'form' => $visibleForm,
+            'searchLogin' => $searchLogin,
+            'enterForm'=> $enterForm,
         ]];
     }
 

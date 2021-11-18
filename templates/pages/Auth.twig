@@ -12,7 +12,35 @@
       <label for="pass">Пароль</label>
       <input type="text" name="pass" required>
     </div>
+    <input type="hidden" name="typeForm" value="auth">
     <button type="submit">Регистрации</button>
   </form>
+  {% endif %}
+  {% if enterForm == TRUE %}
+    <h3>Форма входа</h3>
+    <form action="" method="post">
+      <div>
+        <label for="login">Логин</label>
+        <input type="text" name="login" required>
+      </div>
+      <div>
+        <label for="pass">Пароль</label>
+        <input type="text" name="pass" required>
+      </div>
+      <input type="hidden" name="typeForm" value="enter">
+      <button type="submit">Войти</button>
+    </form>
+  {% endif %}
+  {% if searchLogin == TRUE %}
+  <form action="SearchLogin" method="post">
+    <div>
+      <label for="login">Введите логин для чата</label>
+      <input type="text" name="login" required>
+    </div>
+    <button type="submit">Поиск чата</button>
+  </form>
+  {% endif %}
+  {% if searchLogin == TRUE %}
+  <div><a href="ExitChat">Выход</a></div>
   {% endif %}
 {% endblock %}

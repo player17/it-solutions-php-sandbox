@@ -63,13 +63,26 @@ class Params
     /**
      * Returns String cache password.
      *
-     * @param string|int $key  Name of parameter.
+     * @param string $key  Name of parameter.
      *
      * @return string   cache password.
      */
     public function passwordHash($key): string
     {
         return password_hash($this->params[$key], PASSWORD_BCRYPT);
+    }
+
+    /**
+     * Returns Boolean check hash password.
+     *
+     * @param string $hash hash password.
+     * @param string $pass string password.
+     *
+     * @return Boolean.
+     */
+    public function checkPasswordHash($hash,$pass): boolean
+    {
+        return password_verify($pass, $hash);
     }
 
     /**

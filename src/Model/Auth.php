@@ -9,30 +9,54 @@ use \Chat\Injector;
  */
 class Auth extends Model
 {
+    /**
+     * PDO connect
+     *
+     * @var PDO
+     */
+    public $db = null;
 
     public function __construct() {
-
+        $this->db = Injector::make('MySQL');
     }
 
     /**
      * Check user for existence in table users.
      *
-     * @param string|int $login  Login user.
+     * @param string $login  Login user.
+     * @param string $pass  Login user.
      *
-     * @return TRUE|FALSE  Result user verification.
+     * @return boolean|int Result user verification.
      */
-    public function checkUserInBD($login, $date = []) {
-        $dbh = Injector::make('MySQL');
-        $sql = 'SELECT * from `users` WHERE `login` = "'.$login.'"';
+    public function checkUserInBD($login, $pass) {
+        //-->> Сделать через трайд
+        $dbh = $this->db;
+        $sql = 'SELECT * FROM `users` WHERE `login` = :login';
 
         $stmt = $dbh->prepare($sql);
-        $stmt->execute($date);
+        $stmt->bindParam(':login', $login);
+        $stmt->execute();
+
         $response = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ($response) {
-            return 'Логин занят';
+            return FALSE;
         } else {
-            echo 'Зарегистрировать пользователя и создать ему страницу';
-            return 'Пользователя нужно регистрировать';
+            $sql = 'INSERT INTO `users` (`login`,`pass`) VALUES(:login, :pass);';
+            //echo $sql; die();
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':login', $login);
+            $stmt->bindParam(':pass', $pass);
+            $stmt->execute();
+
+            $sql = 'SELECT `AUTO_INCREMENT`
+                    FROM  INFORMATION_SCHEMA.TABLES
+                    WHERE TABLE_SCHEMA = \'chat\'
+                    AND   TABLE_NAME   = \'users\'';
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+            $idUser = $stmt->fetch(\PDO::FETCH_ASSOC)['AUTO_INCREMENT']-1;
+
+            return $idUser;
         }
     }
 
