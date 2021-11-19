@@ -66,6 +66,7 @@ class Request
         $this->page = $this->parseUriPath($uri);
         $this->GET = new Params($query);
         $this->POST = new Params($request);
+        print_r($this); die();
         return $this;
     }
 
@@ -78,7 +79,6 @@ class Request
     {
         // TODO Rafikov Move it to another place
         $baseRequestUri = $_SERVER['REQUEST_URI'];
-        print_r($baseRequestUri); die('$baseRequestUri');
 
         if($_COOKIE['AUTH'] !== 'TRUE' && $baseRequestUri == '/') {
             $baseRequestUri = 'Auth';
