@@ -38,11 +38,8 @@ class Conf
      */
     public static function parseFromFile(string $file = 'conf/application.php')
     {
-        print_r(PROJECT_ROOT.'/'.$file);
         if (file_exists($fullPath = PROJECT_ROOT.'/'.$file)) {
-            echo 111;
             require_once $fullPath;
         }
-        echo 222;
     }
 }
