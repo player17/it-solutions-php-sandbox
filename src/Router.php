@@ -34,7 +34,6 @@ class Router
      */
     public function dispatch(string $page): array
     {
-        print_r($page); die();
         if (isset($this->pages[$page])) {
             return [$page, $this->pages[$page]];
         }

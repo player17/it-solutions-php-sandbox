@@ -78,11 +78,12 @@ class Request
     {
         // TODO Rafikov Move it to another place
         $baseRequestUri = $_SERVER['REQUEST_URI'];
-        /*
+        print_r($baseRequestUri); die('$baseRequestUri');
+
         if($_COOKIE['AUTH'] !== 'TRUE' && $baseRequestUri == '/') {
             $baseRequestUri = 'Auth';
         }
-        */
+
         return $this->parse(
             $_SERVER['HTTP_HOST'], $baseRequestUri, $_GET, $_POST,
         );
