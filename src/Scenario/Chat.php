@@ -25,19 +25,18 @@ class Chat
         $title = 'Чат';
         $buttonBack = FALSE;
         $formSendMsg = FALSE;
-        $post = $req->POST->getAll();
+        $post = $req->GET->getAll();
         if($post != [] && is_array($post)) {
-            if($req->POST->String('typeForm') == 'search') {
-                $login = $req->POST->String('login');
+            if($req->GET->String('typeForm') == 'search') {
+                $login = $req->GET->String('login');
 
-                $modelChat = $this->chatModel;
-                if($idUser = $modelChat->checkLogin($login)) {
+                if($idUser = $this->chatModel->checkLogin($login)) {
 
                     $title = 'Чат с пользователем ' . $login;
 
                     $arrayFeed = [];
 
-                    $arrayFeed = $modelChat->historyChat($idUser,$_COOKIE['idUser']);
+                    $arrayFeed = $this->chatModel->historyChat($idUser,$_COOKIE['idUser']);
 
                     $formSendMsg = TRUE;
                     $buttonBack = TRUE;
@@ -49,20 +48,24 @@ class Chat
 
                 }
             }
-            if($req->POST->String('typeForm') == 'msg') {
-                $login = $req->POST->String('loginUser');
+            if($req->GET->String('typeForm') == 'msg') {
+
+                $login = $req->GET->String('loginUser');
+                $idUser = $this->chatModel->checkLogin($login);
                 $title = 'Чат с пользователем ' . $login;
 
-                $modelChat = $this->chatModel;
-                $modelChat->setMsg(
-                    $req->POST->String('to'),
-                    $req->POST->String('from'),
-                    $req->POST->String('textMsg')
+                $this->chatModel->setMsg(
+                    $req->GET->String('to'),
+                    $req->GET->String('from'),
+                    $req->GET->String('textMsg')
                 );
 
                 $arrayFeed = [];
 
-                $arrayFeed = $modelChat->historyChat($idUser,$_COOKIE['idUser']);
+                $arrayFeed = $this->chatModel->historyChat($idUser,$_COOKIE['idUser']);
+
+                $formSendMsg = TRUE;
+                $buttonBack = TRUE;
 
             }
 

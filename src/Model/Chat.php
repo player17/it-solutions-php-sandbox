@@ -58,6 +58,8 @@ class Chat extends Model
     public function historyChat($to, $from) {
 
         $dbh = $this->db;
+        // TODO Rafikov определиться с оптимальным запросом к чату
+        /*
         $sql = '
           (SELECT `id`,`to`,`do`,`comment`,`date` 
           FROM `chats` 
@@ -71,14 +73,40 @@ class Chat extends Model
             `to` = :from 
             AND `from` = :to)
         ';
+        */
+        $sql = '
+          SELECT 
+            `id`,
+            `to`,
+            `from`,
+            `comment`,
+            `date` 
+          FROM 
+            `chats` 
+          WHERE 
+            (`to` = :to AND `from` = :from)
+            OR
+            (`to` = :from AND `from` = :to)
+          ORDER BY 
+            `id` ASC
+        ';
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':to', $to);
         $stmt->bindParam(':from', $from);
         $stmt->execute();
 
-        $feedChat = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $feedChat = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            if($row['to'] == $to) {
+                $row['direction'] = 'left';
+            } else {
+                $row['direction'] = 'right';
+            }
+            $feedChat[] = $row;
+        }
 
-        print_r($feedChat);
+        return $feedChat;
 
     }
 
@@ -105,6 +133,13 @@ class Chat extends Model
         $stmt->bindParam(':msg', $msg);
         $stmt->bindParam(':date', date('Y-m-d H:i:s'));
         $stmt->execute();
+
+        if (!$stmt) {
+            echo "\nPDO::errorInfo():\n";
+            print_r($dbh->errorInfo());
+        } else {
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+        }
     }
 
 }

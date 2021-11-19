@@ -2,8 +2,27 @@
 
 {% block content %}
   <h3>{{ title }}</h3>
+
+  {#TODO Rafikov view feed chat#}
+
+  <div style="position: relative; display: inline-block; width: 300px;">
+
+
+  {% for arrayFeed in arrayFeed %}
+
+    {% if arrayFeed.direction == 'left' %}
+      <div style="float: left; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
+    {% endif %}
+
+    {% if arrayFeed.direction == 'right' %}
+      <div style="float: right; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
+    {% endif %}
+
+  {% endfor %}
+  </div>
+
   {% if formSendMsg == TRUE %}
-    <form action="Chat" method="post">
+    <form action="Chat" method="GET">
       <div>
         <textarea name="textMsg"
           rows="5" cols="30" placeholder="Введите сообщение ..."></textarea>
