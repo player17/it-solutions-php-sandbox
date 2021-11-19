@@ -100,7 +100,6 @@ class Request
         $uriPath = trim(preg_replace('/^\/?~[^\/]*/', '',
             ArrayHelper::reset(explode('?', $uri))
         ), '/');
-        print_r($uriPath); die(' // $uriPath');
         return ($uriPath === '') ? 'index' : $uriPath;
     }
 }
