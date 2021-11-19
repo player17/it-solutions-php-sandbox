@@ -66,7 +66,6 @@ class Request
         $this->page = $this->parseUriPath($uri);
         $this->GET = new Params($query);
         $this->POST = new Params($request);
-        print_r($this); die();
         return $this;
     }
 
@@ -101,6 +100,7 @@ class Request
         $uriPath = trim(preg_replace('/^\/?~[^\/]*/', '',
             ArrayHelper::reset(explode('?', $uri))
         ), '/');
+        print_r($uriPath); die(' // $uriPath');
         return ($uriPath === '') ? 'index' : $uriPath;
     }
 }
