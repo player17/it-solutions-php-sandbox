@@ -48,13 +48,20 @@ class Auth extends Model
             $stmt->bindParam(':pass', $pass);
             $stmt->execute();
 
+            /*
             $sql = 'SELECT `AUTO_INCREMENT`
                     FROM  INFORMATION_SCHEMA.TABLES
                     WHERE TABLE_SCHEMA = \'chat\'
                     AND   TABLE_NAME   = \'users\'';
+            */
+            $sql = 'SELECT `id`
+                    FROM  `users`
+                    WHERE `login` = :login';
             $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':login', $login);
             $stmt->execute();
-            $idUser = $stmt->fetch(\PDO::FETCH_ASSOC)['AUTO_INCREMENT']-1;
+            $idUser = $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
+            print_r($idUser); die();
 
             return $idUser;
         }
