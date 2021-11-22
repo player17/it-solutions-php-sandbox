@@ -129,7 +129,7 @@ class Auth extends Model
             $arrayRes[] = $row;
         }
 
-        print_r($arrayRes); die();
+        //print_r($arrayRes); die();
 
         return $arrayRes;
 

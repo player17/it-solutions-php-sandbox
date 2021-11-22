@@ -78,7 +78,7 @@ class Auth implements Scenario
                     setcookie("login", $login, time()+3600);
                     $searchLogin = true;
 
-                    $arrayRegUsers = $this->arrayAllRegUser($idUser);
+                    //$arrayRegUsers = $this->arrayAllRegUser($idUser);
 
                 } else {
                     $title = 'Неверный логин или пароль';
