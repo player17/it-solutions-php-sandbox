@@ -61,7 +61,6 @@ class Auth extends Model
             $stmt->bindParam(':login', $login);
             $stmt->execute();
             $idUser = $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
-            print_r($idUser); die();
 
             return $idUser;
         }
