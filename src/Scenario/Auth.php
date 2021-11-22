@@ -56,6 +56,7 @@ class Auth implements Scenario
                     setcookie("idUser", $idUser, time()+3600);
                     setcookie("login", $login, time()+3600);
                     $searchLogin = true;
+                    $enterForm = false;
                 } else {
                     $title = 'Есть такой пользователь';
                     $visibleForm = true;
