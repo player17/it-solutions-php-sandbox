@@ -37,7 +37,7 @@ class Auth implements Scenario
         $searchLogin = false;
         $enterForm = true;
         $title = 'Auth page';
-        $arrayRegUsers = [];
+        $arrayRegUsers = null;
 
         $post = $req->POST->getAll();
         if($post != [] && is_array($post)) {
@@ -77,11 +77,12 @@ class Auth implements Scenario
                     setcookie("idUser", $idUser, time()+3600);
                     setcookie("login", $login, time()+3600);
                     $searchLogin = true;
+
+                    $arrayRegUsers = $this->arrayAllRegUser($idUser);
+
                 } else {
                     $title = 'Неверный логин или пароль';
                 }
-
-                $arrayRegUsers = $this->arrayAllRegUser();
 
             }
 
@@ -99,13 +100,14 @@ class Auth implements Scenario
     /**
      * Returns for all users in the database.
      *
+     * @param $idUser id user.
+     *
      * @return array list all reg users.
      */
-    public function arrayAllRegUser() : array
+    public function arrayAllRegUser($idUser) : array
     {
-        $arrayRes = ['test'];
 
-        return $arrayRes;
+        return $this->authModel->allRegUsers($idUser);
 
     }
 

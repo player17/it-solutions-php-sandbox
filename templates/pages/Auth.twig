@@ -44,4 +44,13 @@
   {% if searchLogin == TRUE %}
   <div><a href="ExitChat">Выход</a></div>
   {% endif %}
+
+  {% if arrayRegUsers != NULL %}
+    <br><hr>
+    {% for arrayRegUsers in arrayRegUsers %}
+
+      <span>{{ arrayRegUsers.login }}</span>
+
+    {% endfor %}
+  {% endif %}
 {% endblock %}

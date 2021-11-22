@@ -93,4 +93,44 @@ class Auth extends Model
 
     }
 
+    /**
+     * Returns for all users in the database.
+     *
+     * @param $idUser id user.
+     *
+     * @return array list all reg users.
+     */
+    public function allRegUsers($idUser) {
+
+        $arrayRes = [];
+
+        $sql = '
+          SELECT 
+            `u`.`id`,
+            `u`.`login`,
+            COUNT(`c`.`to`)
+          FROM 
+            `users` as `u`
+          LEFT JOIN
+            `chats` as `c`
+            ON (`u`.`id` = `c`.`to`)
+          WHERE
+            `u`.`id` != :idUser
+          GROUP BY
+            `u`.`id`, 
+            `u`.`login`
+        ';
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':idUser', $idUser);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $arrayRes[] = $row;
+        }
+
+        return $arrayRes;
+
+    }
+
 }
