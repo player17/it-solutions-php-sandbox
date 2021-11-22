@@ -49,7 +49,11 @@
     <br><hr>
     {% for arrayRegUsers in arrayRegUsers %}
 
-      <span>{{ arrayRegUsers.login }}</span>
+      <span>
+        <a href="/Chat?login={{ arrayRegUsers.login }}&typeForm=search">
+          {{ arrayRegUsers.login }}[{{ arrayRegUsers.countMsg }}]
+        </a>
+      </span><br>
 
     {% endfor %}
   {% endif %}

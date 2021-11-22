@@ -24,8 +24,12 @@ class Index implements Scenario
      */
     public function run(Request $req): array
     {
+        $auth = new Auth();
+        $arrayRegUsers = $auth->arrayAllRegUser($_COOKIE['login']);
+
         return ['toRender' => [
             'title' => 'Здравствуйте, ' . $_COOKIE['login'],
+            'arrayRegUsers' => $arrayRegUsers,
         ]];
     }
 }

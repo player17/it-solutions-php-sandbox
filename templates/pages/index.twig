@@ -11,4 +11,18 @@
       <button type="submit">Поиск чата</button>
     </form>
     <div><a href="ExitChat">Выход</a></div>
+
+
+    {% if arrayRegUsers != NULL %}
+      <br><hr>
+      {% for arrayRegUsers in arrayRegUsers %}
+
+        <span>
+            <a href="/Chat?login={{ arrayRegUsers.login }}&typeForm=search">
+              {{ arrayRegUsers.login }}[{{ arrayRegUsers.countMsg }}]
+            </a>
+          </span><br>
+
+      {% endfor %}
+    {% endif %}
 {% endblock %}

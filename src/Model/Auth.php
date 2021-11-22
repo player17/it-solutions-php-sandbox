@@ -108,7 +108,7 @@ class Auth extends Model
           SELECT 
             `u`.`id`,
             `u`.`login`,
-            COUNT(`c`.`to`)
+            COUNT(`c`.`to`) as `countMsg`
           FROM 
             `users` as `u`
           LEFT JOIN
@@ -119,17 +119,17 @@ class Auth extends Model
           GROUP BY
             `u`.`id`, 
             `u`.`login`
+          ORDER BY
+            `countMsg` DESC
         ';
 
-        $stmt = $dbh->prepare($sql);
+        $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':idUser', $idUser);
         $stmt->execute();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
             $arrayRes[] = $row;
         }
-
-        //print_r($arrayRes); die();
 
         return $arrayRes;
 
