@@ -37,6 +37,7 @@ class Auth implements Scenario
         $searchLogin = false;
         $enterForm = true;
         $title = 'Auth page';
+        $arrayRegUsers = [];
 
         $post = $req->POST->getAll();
         if($post != [] && is_array($post)) {
@@ -79,6 +80,9 @@ class Auth implements Scenario
                 } else {
                     $title = 'Неверный логин или пароль';
                 }
+
+                $arrayRegUsers = $this->arrayAllRegUser();
+
             }
 
 
@@ -88,9 +92,22 @@ class Auth implements Scenario
             'form' => $visibleForm,
             'searchLogin' => $searchLogin,
             'enterForm'=> $enterForm,
+            'arrayRegUsers' => $arrayRegUsers,
         ]];
     }
 
+    /**
+     * Returns for all users in the database.
+     *
+     * @return array list all reg users.
+     */
+    public function arrayAllRegUser() : array
+    {
+        $arrayRes = ['test'];
+
+        return $arrayRes;
+
+    }
 
 }
 
