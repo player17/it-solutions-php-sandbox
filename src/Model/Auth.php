@@ -106,34 +106,50 @@ class Auth extends Model
 
         $sql = '
           (
-              SELECT 
-                `u`.`id`,
-                `u`.`login`,
-                COUNT(`c`.`to`) as `countMsg`
-              FROM 
-                `users` as `u`
-              LEFT JOIN
-                `chats` as `c`
-                ON (`u`.`id` = `c`.`to`)
-              WHERE
-                `u`.`id` != :idUser
-                AND 
-                    (
-                        `c`.`from` = :idUser
-                        OR `c`.`to` = :idUser
-                    )
-              GROUP BY
-                `u`.`id`, 
-                `u`.`login`
-              ORDER BY
-                `countMsg` DESC
+            SELECT 
+              `u`.`id`,
+              `u`.`login`,
+              COUNT(`c`.`id`) as `countMsg`
+            FROM 
+              `users` as `u`
+            LEFT JOIN
+              `chats` as `c`
+              ON (`u`.`id` = `c`.`to`)
+            WHERE
+              `u`.`id` != :idUser
+              AND `c`.`from` = :idUser
+            GROUP BY
+              `u`.`id`, 
+              `u`.`login`
+            ORDER BY
+              `countMsg` DESC
+          )
+          UNION
+          (
+            SELECT 
+              `u`.`id`,
+              `u`.`login`,
+              COUNT(`c`.`id`) as `countMsg`
+            FROM 
+              `users` as `u`
+            LEFT JOIN
+              `chats` as `c`
+              ON (`u`.`id` = `c`.`from`)
+            WHERE
+              `u`.`id` != :idUser
+              AND `c`.`to` = :idUser
+            GROUP BY
+              `u`.`id`, 
+              `u`.`login`
+            ORDER BY
+              `countMsg` DESC
           )
           UNION
           (
             SELECT 
                 `u`.`id`,
                 `u`.`login`,
-                COUNT(`c`.`to`) as `countMsg`
+                COUNT(`c`.`id`) as `countMsg`
               FROM 
                 `users` as `u`
               LEFT JOIN
@@ -154,7 +170,11 @@ class Auth extends Model
         $stmt->execute();
 
         while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
-            $arrayRes[] = $row;
+            if(array_key_exists($row['login'], $arrayRes)) {
+                $arrayRes[$row['login']]['countMsg'] += $row['countMsg'];
+            } else {
+                $arrayRes[$row['login']] = $row;
+            }
         }
 
         return $arrayRes;
