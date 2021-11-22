@@ -105,22 +105,48 @@ class Auth extends Model
         $arrayRes = [];
 
         $sql = '
-          SELECT 
-            `u`.`id`,
-            `u`.`login`,
-            COUNT(`c`.`to`) as `countMsg`
-          FROM 
-            `users` as `u`
-          LEFT JOIN
-            `chats` as `c`
-            ON (`u`.`id` = `c`.`to`)
-          WHERE
-            `u`.`id` != :idUser
-          GROUP BY
-            `u`.`id`, 
-            `u`.`login`
-          ORDER BY
-            `countMsg` DESC
+          (
+              SELECT 
+                `u`.`id`,
+                `u`.`login`,
+                COUNT(`c`.`to`) as `countMsg`
+              FROM 
+                `users` as `u`
+              LEFT JOIN
+                `chats` as `c`
+                ON (`u`.`id` = `c`.`to`)
+              WHERE
+                `u`.`id` != :idUser
+                AND 
+                    (
+                        `c`.`from` = :idUser
+                        OR `c`.`to` = :idUser
+                    )
+              GROUP BY
+                `u`.`id`, 
+                `u`.`login`
+              ORDER BY
+                `countMsg` DESC
+          )
+          UNION
+          (
+            SELECT 
+                `u`.`id`,
+                `u`.`login`,
+                COUNT(`c`.`to`) as `countMsg`
+              FROM 
+                `users` as `u`
+              LEFT JOIN
+                `chats` as `c`
+                ON (`u`.`id` = `c`.`to`)
+              WHERE
+                `u`.`id` != :idUser
+              GROUP BY
+                `u`.`id`, 
+                `u`.`login`
+              HAVING
+                `countMsg` = 0
+          )
         ';
 
         $stmt = $this->db->prepare($sql);

@@ -8,17 +8,26 @@
   <div style="position: relative; display: inline-block; width: 300px;">
 
 
-  {% for arrayFeed in arrayFeed %}
+    {% for arrayFeed in arrayFeed %}
 
-    {% if arrayFeed.direction == 'left' %}
-      <div style="float: left; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
-    {% endif %}
+      {% if arrayFeed.direction == 'left' %}
 
-    {% if arrayFeed.direction == 'right' %}
-      <div style="float: right; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
-    {% endif %}
+        <span style="display: inline-block; width: 100%; font-size: 12px; color: grey; text-align: left;">
+          Я ({{ arrayFeed.date }}):
+      </span>
+        <div style="float: left; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">
+          {{ arrayFeed.comment }}
+        </div>
+      {% endif %}
 
-  {% endfor %}
+      {% if arrayFeed.direction == 'right' %}
+        <span style="display: inline-block; width: 100%; font-size: 12px; color: grey; text-align: right;">
+        {{ loginUser }} ({{ arrayFeed.date }}):
+      </span>
+        <div style="float: right; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
+      {% endif %}
+
+    {% endfor %}
   </div>
 
   {% if formSendMsg == TRUE %}
