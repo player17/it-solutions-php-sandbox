@@ -83,8 +83,6 @@ class Request
             $baseRequestUri = 'Auth';
         }
 
-        print_r($_SERVER); die();
-
         return $this->parse(
             $_SERVER['HTTP_HOST'], $baseRequestUri, $_GET, $_POST,
         );
