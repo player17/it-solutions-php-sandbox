@@ -1,6 +1,6 @@
 # Вкл. механиз переадрисации
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !-f
-RewriteCond %{REQUEST_URI} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
