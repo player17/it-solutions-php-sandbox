@@ -14,10 +14,12 @@ class Chat
     use Inject\HtmlRenderer;
 
     public $chatModel = null;
+    public $authModel = null;
 
     public function __construct()
     {
         $this->chatModel = new Model\Chat();
+        $this->authModel = new Model\Auth();
     }
 
     public function run(Request $req): array
@@ -26,6 +28,8 @@ class Chat
         $buttonBack = FALSE;
         $formSendMsg = FALSE;
         $post = $req->GET->getAll();
+        $arrayFeed = [];
+        $arrayUsers = [];
         if($post != [] && is_array($post)) {
             if($req->GET->String('typeForm') == 'search') {
                 $login = $req->GET->String('login');
@@ -34,12 +38,12 @@ class Chat
 
                     $title = 'Чат с пользователем ' . $login;
 
-                    $arrayFeed = [];
-
                     $arrayFeed = $this->chatModel->historyChat($idUser,$_COOKIE['idUser']);
 
                     $formSendMsg = TRUE;
                     $buttonBack = TRUE;
+
+                    $arrayUsers = $this->listUsers($_COOKIE['idUser']);
 
                 } else {
 
@@ -60,8 +64,6 @@ class Chat
                     $req->GET->String('textMsg')
                 );
 
-                $arrayFeed = [];
-
                 $arrayFeed = $this->chatModel->historyChat($idUser,$_COOKIE['idUser']);
 
                 $formSendMsg = TRUE;
@@ -79,6 +81,19 @@ class Chat
             'from' => $_COOKIE['idUser'],
             'loginUser' => $login,
             'arrayFeed' => $arrayFeed,
+            'arrayUsers' => $arrayUsers,
         ]];
+    }
+
+    /**
+     * Display list users
+     *
+     * @param $idUser id user.
+     *
+     * @return array list users.
+     */
+    public function listUsers($idUser): array
+    {
+        return $this->authModel->allRegUsers($idUser);
     }
 }

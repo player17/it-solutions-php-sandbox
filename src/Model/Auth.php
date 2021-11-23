@@ -162,6 +162,8 @@ class Auth extends Model
                 `u`.`login`
               HAVING
                 `countMsg` = 0
+              ORDER BY
+                `u`.`login` ASC
           )
         ';
 

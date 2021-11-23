@@ -1,49 +1,72 @@
 {% extends 'layout/default.twig' %}
 
 {% block content %}
-  <h3>{{ title }}</h3>
-
-  {#TODO Rafikov view feed chat#}
-
-  <div style="position: relative; display: inline-block; width: 300px;">
-
-
-    {% for arrayFeed in arrayFeed %}
-
-      {% if arrayFeed.direction == 'left' %}
-
-        <span style="display: inline-block; width: 100%; font-size: 12px; color: grey; text-align: left;">
-          Я ({{ arrayFeed.date }}):
-      </span>
-        <div style="float: left; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">
-          {{ arrayFeed.comment }}
-        </div>
-      {% endif %}
-
-      {% if arrayFeed.direction == 'right' %}
-        <span style="display: inline-block; width: 100%; font-size: 12px; color: grey; text-align: right;">
-        {{ loginUser }} ({{ arrayFeed.date }}):
-      </span>
-        <div style="float: right; width: 140px; padding: 8px; border: 1px solid #333; margin-bottom: 8px;">{{ arrayFeed.comment }}</div>
-      {% endif %}
-
-    {% endfor %}
-  </div>
-
-  {% if formSendMsg == TRUE %}
-    <form action="Chat" method="GET">
-      <div>
-        <textarea name="textMsg"
-          rows="5" cols="30" placeholder="Введите сообщение ..."></textarea>
+  <div class="page-chart">
+    {% if buttonBack == TRUE %}
+      <a class="page-chart__link-back" href="/">Вернуться назад</a>
+    {% endif %}
+    <div class="page-chart__col-left__users">
+      <h3>Список пользователей</h3>
+      <div class="page-chart__col-right__users__array">
+        {% for arrayUsers in arrayUsers %}
+          <p>
+            <a href="/Chat?login={{ arrayUsers.login }}&typeForm=search">
+              {{ arrayUsers.login }} [{{ arrayUsers.countMsg }}]
+            </a>
+          </p>
+        {% endfor %}
       </div>
-      <input type="hidden" name="typeForm" value="msg">
-      <input type="hidden" name="to" value="{{ to }}">
-      <input type="hidden" name="from" value="{{ from }}">
-      <input type="hidden" name="loginUser" value="{{ loginUser }}">
-      <button type="submit">Отправить</button>
-    </form>
-  {% endif %}
-  {% if buttonBack == TRUE %}
-    <a href="/">Вернуться назад</a>
-  {% endif %}
+    </div>
+    <div class="page-chart__col-left__msg">
+      <h3>{{ title }}</h3>
+
+      <div id="page-chart__col-left__msg__wrap_id" class="page-chart__col-left__msg__wrap">
+
+        {% for arrayFeed in arrayFeed %}
+
+          {% if arrayFeed.direction == 'left' %}
+            <div class="msg-left">
+              <span>
+               Я ({{ arrayFeed.date }}):
+              </span>
+              <div>
+                {{ arrayFeed.comment }}
+              </div>
+            </div>
+          {% endif %}
+
+          {% if arrayFeed.direction == 'right' %}
+            <div class="msg-right">
+              <span>
+                {{ loginUser }} ({{ arrayFeed.date }}):
+              </span>
+              <div>{{ arrayFeed.comment }}</div>
+            </div>
+          {% endif %}
+
+        {% endfor %}
+
+      </div>
+      <script type="text/javascript">
+        var block = document.getElementById("page-chart__col-left__msg__wrap_id");
+        block.scrollTop = block.scrollHeight;
+      </script>
+
+      {% if formSendMsg == TRUE %}
+        <form class="page-chart__col-left__msg__form" action="Chat" method="GET">
+          <div>
+        <textarea name="textMsg"
+                  rows="5" cols="40" placeholder="Введите сообщение ..."></textarea>
+          </div>
+          <input type="hidden" name="typeForm" value="msg">
+          <input type="hidden" name="to" value="{{ to }}">
+          <input type="hidden" name="from" value="{{ from }}">
+          <input type="hidden" name="loginUser" value="{{ loginUser }}">
+          <button type="submit">Отправить</button>
+        </form>
+      {% endif %}
+    </div>
+
+  </div>
 {% endblock %}
+
