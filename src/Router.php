@@ -35,6 +35,11 @@ class Router
     public function dispatch(string $page): array
     {
         if (isset($this->pages[$page])) {
+
+            if($_COOKIE['AUTH'] !== 'TRUE' && $page != 'Auth') {
+                //return ['404', $this->pages['404']];
+                header('Location: /');
+            }
             return [$page, $this->pages[$page]];
         }
         return ['404', $this->pages['404']];
