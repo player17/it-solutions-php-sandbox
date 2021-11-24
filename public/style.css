@@ -145,5 +145,7 @@ body a {
 .page-chart__col-right__users__array p a {
     padding: 0px;
 }
-
+#page-chart__col-left__msg__wrap_msg_id {
+    display: none;
+}
 

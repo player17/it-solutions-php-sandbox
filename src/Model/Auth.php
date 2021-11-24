@@ -234,16 +234,4 @@ class Auth extends Model
 
     }
 
-    /**
-     * Returns sort list users sorting by countMsg, login.
-     *
-     * @param $arr list users form allRegUsers.
-     *
-     * @return array sort list users sorting by countMsg, login.
-     */
-    public function sortlistUsers($one, $two)
-    {
-
-    }
-
 }

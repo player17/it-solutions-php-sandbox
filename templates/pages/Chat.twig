@@ -29,6 +29,7 @@
               <span>
                Я ({{ arrayFeed.date }}):
               </span>
+              <span id="page-chart__col-left__msg__wrap_msg_id">{{ arrayFeed.id }}</span>
               <div>
                 {{ arrayFeed.comment }}
               </div>
@@ -40,6 +41,7 @@
               <span>
                 {{ loginUser }} ({{ arrayFeed.date }}):
               </span>
+              <span id="page-chart__col-left__msg__wrap_msg_id">{{ arrayFeed.id }}</span>
               <div>{{ arrayFeed.comment }}</div>
             </div>
           {% endif %}
@@ -68,5 +70,6 @@
     </div>
 
   </div>
+  <script src="/scripts/chatScripts.js"></script>
 {% endblock %}
 
